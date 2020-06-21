@@ -61,7 +61,7 @@ resource "aws_security_group" "gid-lb" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 
-    tags {
+    tags = {
         Author = "Get into DevOps"
     }
 }
@@ -98,7 +98,7 @@ resource "aws_security_group" "gid-app" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 
-    tags {
+    tags = {
         Author = "Get into DevOps"
     }
 }
@@ -120,7 +120,7 @@ resource "aws_instance" "gid-app" {
     instance_type = "t2.micro"
     count = 2
 
-    tags {
+    tags = {
         Name = "gid-app${count.index}"
         Author = "Get into DevOps"
     }
@@ -140,6 +140,7 @@ resource "aws_instance" "gid-app" {
             user = "ubuntu"
             private_key = "${file("id_rsa_example")}"
             timeout = "60s"
+            host = "${self.public_ip}"
         }
     }
 }
@@ -151,9 +152,9 @@ resource "aws_lb" "gid" {
   name            = "gid-lb"
   internal        = false
   security_groups = ["${aws_security_group.gid-lb.id}"]
-  subnets         = ["${aws_default_subnet.default.*.id}"]
+  subnets         = "${aws_default_subnet.default.*.id}"
 
-  tags {
+  tags = {
     Author = "Get into DevOps"
   }
 }
