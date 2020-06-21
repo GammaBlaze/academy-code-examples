@@ -87,10 +87,10 @@
         state: present
 
     - name: Ensure Docker repository is available
-      apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present
+      apt_repository: repo='deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable' state=present
 
     - name: Ensure Docker and dependencies are installed
-      apt: name=docker-engine update_cache=yes
+      apt: name=docker-ce update_cache=yes allow_unauthenticated=yes
 
     - name: Ensure Docker-py is installed
       pip: name=docker-py
